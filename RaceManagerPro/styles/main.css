@@ -1,0 +1,292 @@
+[data-bs-theme="dark"] {
+  --primary-color: #dc3545;
+  --secondary-color: #6c757d;
+  --success-color: #198754;
+  --danger-color: #dc3545;
+  --warning-color: #ffc107;
+  --info-color: #0dcaf0;
+  --dark-color: #212529;
+  --light-color: #f8f9fa;
+  --bs-body-bg: #1a1a1a;
+  --bs-body-color: #f8f9fa;
+  --bs-border-color: rgba(255, 255, 255, 0.1);
+}
+
+[data-bs-theme="light"] {
+  --primary-color: #0d6efd;
+  --secondary-color: #6c757d;
+  --success-color: #198754;
+  --danger-color: #dc3545;
+  --warning-color: #ffc107;
+  --info-color: #0dcaf0;
+  --dark-color: #212529;
+  --light-color: #f8f9fa;
+  --bs-body-bg: #f8f9fa;
+  --bs-body-color: #212529;
+  --bs-border-color: rgba(0, 0, 0, 0.1);
+}
+
+[data-bs-theme="motorsport"] {
+  --primary-color: #ff0000;
+  --secondary-color: #6c757d;
+  --success-color: #198754;
+  --danger-color: #dc3545;
+  --warning-color: #ffc107;
+  --info-color: #0dcaf0;
+  --dark-color: #212529;
+  --light-color: #f8f9fa;
+  --bs-body-bg: #121212;
+  --bs-body-color: #f8f9fa;
+  --bs-border-color: rgba(255, 255, 255, 0.1);
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: var(--bs-body-bg);
+  color: var(--bs-body-color);
+  background-attachment: fixed;
+  min-height: 100vh;
+  padding-top: 76px;
+}
+
+/* Navigation */
+.navbar {
+  backdrop-filter: blur(10px);
+  background: rgba(var(--dark-color-rgb), 0.95) !important;
+  border-bottom: 1px solid var(--bs-border-color);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.navbar-brand {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--primary-color);
+}
+
+/* Main Content */
+.main-content {
+  min-height: calc(100vh - 76px);
+  padding: 2rem 0;
+}
+
+/* Auth Screen */
+.auth-screen {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 76px);
+  padding: 2rem 1rem;
+}
+
+.auth-card {
+  background: rgba(var(--dark-color-rgb), 0.05);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--bs-border-color);
+  border-radius: 12px;
+  padding: 2.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  width: 100%;
+  max-width: 400px;
+}
+
+.divider {
+  position: relative;
+  text-align: center;
+  margin: 1rem 0;
+  color: var(--secondary-color);
+}
+
+.divider::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--bs-border-color);
+  z-index: 1;
+}
+
+.divider::after {
+  content: attr(data-text);
+  background: var(--bs-body-bg);
+  padding: 0 1rem;
+  position: relative;
+  z-index: 2;
+}
+
+/* Cards */
+.card {
+  background: rgba(var(--dark-color-rgb), 0.05);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--bs-border-color);
+  border-radius: 12px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.card-header {
+  background: rgba(var(--dark-color-rgb), 0.05);
+  border-bottom: 1px solid var(--bs-border-color);
+  border-radius: 12px 12px 0 0 !important;
+}
+
+/* Championship Cards */
+.championship-card {
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.championship-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--primary-color), var(--info-color));
+}
+
+.championship-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+/* Buttons */
+.btn {
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: none;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.btn:hover::before {
+  left: 100%;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--primary-color), #0056b3);
+  box-shadow: 0 4px 15px rgba(13, 110, 253, 0.3);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(13, 110, 253, 0.4);
+}
+
+/* Tables */
+.table {
+  --bs-table-bg: rgba(var(--dark-color-rgb), 0.02);
+  --bs-table-border-color: var(--bs-border-color);
+}
+
+.table-hover > tbody > tr:hover > * {
+  --bs-table-hover-bg: rgba(var(--dark-color-rgb), 0.05);
+}
+
+.table th {
+  border-top: none;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.875rem;
+  letter-spacing: 0.05em;
+}
+
+/* Podium */
+.podium {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  height: 200px;
+  padding: 1rem;
+  border-bottom: 1px solid var(--bs-border-color);
+}
+
+.podium-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: 100px;
+}
+
+.podium-step.first {
+  height: 150px;
+  background-color: #ffd700;
+  color: #000;
+}
+
+.podium-step.second {
+  height: 100px;
+  background-color: #c0c0c0;
+  color: #000;
+}
+
+.podium-step.third {
+  height: 75px;
+  background-color: #cd7f32;
+  color: #000;
+}
+
+.podium-rank {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.podium-driver {
+  font-size: 1.2rem;
+}
+
+.podium-points {
+  font-size: 1rem;
+}
+
+/* Races container */
+#races-container {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+#back-to-top-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 99;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(var(--dark-color-rgb), 0.1);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(var(--dark-color-rgb), 0.3);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(var(--dark-color-rgb), 0.5);
+}

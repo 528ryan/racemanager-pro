@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MotorSport Pro - Test Page</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Racing+Sans+One&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .racing-font {
+            font-family: 'Racing Sans One', cursive;
+        }
+        .smooth-transition {
+            transition: all 0.3s ease;
+        }
+        .racing-loader {
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(220, 38, 38, 0.1);
+            border-left: 2px solid #dc2626;
+            border-radius: 50%;
+            animation: racing-spin 1s linear infinite;
+        }
+        @keyframes racing-spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white">
+    <div class="min-h-screen flex items-center justify-center p-4">
+        <div class="text-center">
+            <h1 class="racing-font text-4xl mb-4">MotorSport Pro</h1>
+            <p class="text-gray-300 mb-6">Testing icons and animations...</p>
+            
+            <div class="space-y-4">
+                <div>
+                    <i data-feather="flag" class="text-red-500 w-8 h-8 inline-block"></i>
+                    <span class="ml-2">Flag Icon</span>
+                </div>
+                
+                <div>
+                    <div class="racing-loader inline-block"></div>
+                    <span class="ml-2">Loading Animation</span>
+                </div>
+                
+                <button class="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-full smooth-transition">
+                    Test Button
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof feather !== 'undefined') {
+                feather.replace();
+                console.log('Icons loaded successfully!');
+            } else {
+                console.error('Feather icons not loaded');
+            }
+        });
+    </script>
+</body>
+</html>

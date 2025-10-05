@@ -1,0 +1,608 @@
+/* MotorSport Pro - Modern Racing Theme */
+
+:root {
+    --racing-primary: #f97316;    /* Orange - Cor principal */
+    --racing-secondary: #1e3a5f;  /* Deep Teal Blue - Cor secundária elegante */
+    --racing-accent: #eab308;     /* Yellow - Cor de destaque */
+    --racing-red: #dc2626;        /* Red - Cor de alerta */
+    --racing-orange: #f97316;     /* Manter compatibilidade */
+    --racing-yellow: #eab308;     /* Manter compatibilidade */
+    --dark-bg: #0f0f0f;
+    --card-bg: rgba(17, 17, 17, 0.8);
+    --glass-border: rgba(255, 255, 255, 0.1);
+}
+
+/* Glass morphism effect */
+.glass-effect,
+.glass-card {
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+}
+
+/* Racing buttons */
+.racing-btn {
+    background: linear-gradient(135deg, var(--racing-red), var(--racing-orange));
+    border: none;
+    color: white;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 20px rgba(220, 38, 38, 0.4);
+}
+
+.racing-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(220, 38, 38, 0.6);
+    background: linear-gradient(135deg, var(--racing-orange), var(--racing-red));
+}
+
+/* Gradient text */
+.gradient-text {
+    background: linear-gradient(135deg, var(--racing-red), var(--racing-orange), var(--racing-yellow));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Racing loader */
+.racing-loader {
+    width: 50px;
+    height: 50px;
+    border: 4px solid rgba(255, 255, 255, 0.1);
+    border-left-color: var(--racing-red);
+    border-radius: 50%;
+    animation: racing-spin 1s linear infinite;
+}
+
+@keyframes racing-spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Social Media Specific Styles */
+.social-post {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.social-post:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(220, 38, 38, 0.15);
+}
+
+/* User avatar with online indicator */
+.user-avatar {
+    position: relative;
+}
+
+.user-avatar::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 12px;
+    height: 12px;
+    background: #10b981;
+    border: 2px solid #111827;
+    border-radius: 50%;
+}
+
+/* Post interaction buttons */
+.post-action:hover {
+    transform: scale(1.1);
+}
+
+/* Trending topics animation */
+.trending-topic {
+    transition: all 0.2s ease;
+}
+
+.trending-topic:hover {
+    background: linear-gradient(135deg, var(--racing-red), var(--racing-orange));
+    transform: translateX(4px);
+}
+
+/* Vanta.js Background Container */
+#vanta-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -10;
+}
+
+/* Racing Particles Overlay */
+#particles-overlay {
+    z-index: -5;
+    pointer-events: none;
+}
+
+/* Ensure content is above Vanta background */
+.container,
+.relative {
+    z-index: 1;
+}
+
+/* Feed animations */
+.feed-item {
+    animation: feedSlideIn 0.5s ease-out;
+}
+
+@keyframes feedSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Custom scrollbar for feed */
+.social-feed::-webkit-scrollbar {
+    width: 6px;
+}
+
+.social-feed::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+}
+
+.social-feed::-webkit-scrollbar-thumb {
+    background: var(--racing-red);
+    border-radius: 3px;
+}
+
+.social-feed::-webkit-scrollbar-thumb:hover {
+    background: var(--racing-orange);
+}
+
+/* Racing-inspired animations */
+.racing-pulse {
+    animation: racing-pulse 2s infinite;
+}
+
+@keyframes racing-pulse {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.05);
+        opacity: 0.9;
+    }
+}
+
+/* Smooth transitions */
+.smooth-transition {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Custom hover effects */
+.hover-lift:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+/* Championship card hover effect */
+.championship-card {
+    position: relative;
+    overflow: hidden;
+}
+
+.championship-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(220, 38, 38, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+.championship-card:hover::before {
+    left: 100%;
+}
+
+/* Racing stripes effect */
+.racing-stripes {
+    position: relative;
+    overflow: hidden;
+}
+
+.racing-stripes::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 10px,
+        rgba(220, 38, 38, 0.1) 10px,
+        rgba(220, 38, 38, 0.1) 20px
+    );
+    pointer-events: none;
+}
+
+/* Custom scrollbar with racing theme */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--dark-bg);
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(to bottom, var(--racing-red), var(--racing-orange));
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(to bottom, var(--racing-orange), var(--racing-yellow));
+}
+
+/* Loading animations */
+.racing-loader {
+    width: 40px;
+    height: 40px;
+    border: 4px solid rgba(220, 38, 38, 0.1);
+    border-left: 4px solid var(--racing-red);
+    border-radius: 50%;
+    animation: racing-spin 1s linear infinite;
+}
+
+.racing-loader.w-5 {
+    width: 20px;
+    height: 20px;
+    border-width: 2px;
+}
+
+@keyframes racing-spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Login page specific animations */
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+.float-animation {
+    animation: float 6s ease-in-out infinite;
+}
+
+/* Gradient text effect */
+.gradient-text {
+    background: linear-gradient(135deg, #dc2626, #f97316, #eab308);
+    background-size: 400% 400%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: gradient-shift 3s ease infinite;
+}
+
+@keyframes gradient-shift {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+/* Login button glow effect */
+.login-glow {
+    position: relative;
+    overflow: hidden;
+}
+
+.login-glow::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(220, 38, 38, 0.3) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.login-glow:hover::after {
+    opacity: 1;
+}
+
+/* Button hover effects */
+.btn-racing {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(135deg, var(--racing-red), var(--racing-orange));
+    border: none;
+    color: white;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.btn-racing::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+.btn-racing:hover::before {
+    left: 100%;
+}
+
+/* Neon glow effects */
+.neon-glow {
+    box-shadow: 0 0 20px rgba(220, 38, 38, 0.5);
+}
+
+.neon-glow:hover {
+    box-shadow: 0 0 30px rgba(220, 38, 38, 0.8);
+}
+
+/* Checkered flag pattern */
+.checkered-flag {
+    background-image: 
+        linear-gradient(45deg, #000 25%, transparent 25%), 
+        linear-gradient(-45deg, #000 25%, transparent 25%), 
+        linear-gradient(45deg, transparent 75%, #000 75%), 
+        linear-gradient(-45deg, transparent 75%, #000 75%);
+    background-size: 20px 20px;
+    background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+}
+
+/* Speed lines effect */
+.speed-lines {
+    background-image: repeating-linear-gradient(
+        90deg,
+        transparent,
+        transparent 2px,
+        rgba(220, 38, 38, 0.1) 2px,
+        rgba(220, 38, 38, 0.1) 4px
+    );
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .racing-font {
+        font-size: 1.5rem !important;
+    }
+    
+    .glass-effect {
+        margin: 1rem;
+        border-radius: 1rem;
+    }
+}
+
+/* Focus styles for accessibility */
+.focus\:ring-racing:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.3);
+}
+
+/* ========================================
+   CUSTOM RACING BACKGROUND 
+   ======================================== */
+
+#racing-background {
+    background: 
+        linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #0a0a0a 100%),
+        repeating-linear-gradient(
+            45deg,
+            transparent,
+            transparent 100px,
+            rgba(220, 38, 38, 0.03) 100px,
+            rgba(220, 38, 38, 0.03) 200px
+        );
+    overflow: hidden;
+    position: fixed;
+    z-index: -1;
+}
+
+/* Speed Lines Animation */
+.speed-lines {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        repeating-linear-gradient(
+            90deg,
+            transparent 0px,
+            transparent 48px,
+            rgba(220, 38, 38, 0.3) 50px,
+            rgba(220, 38, 38, 0.3) 52px
+        );
+    animation: speedLines 2s linear infinite;
+    z-index: -1;
+}
+
+@keyframes speedLines {
+    0% { transform: translateX(-100px); }
+    100% { transform: translateX(0px); }
+}
+
+/* Racing Grid */
+.racing-grid {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        linear-gradient(rgba(220, 38, 38, 0.15) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(220, 38, 38, 0.15) 1px, transparent 1px);
+    background-size: 40px 40px;
+    animation: gridMove 8s linear infinite;
+    z-index: -1;
+}
+
+@keyframes gridMove {
+    0% { transform: translate(0, 0); }
+    100% { transform: translate(50px, 50px); }
+}
+
+/* Racing Overlay */
+.racing-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        radial-gradient(circle at 20% 80%, rgba(220, 38, 38, 0.2) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(249, 115, 22, 0.15) 0%, transparent 50%),
+        linear-gradient(45deg, transparent 40%, rgba(220, 38, 38, 0.05) 50%, transparent 60%);
+    animation: pulse 4s ease-in-out infinite alternate;
+    z-index: -1;
+}
+
+@keyframes pulse {
+    0% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+
+/* Particles Canvas */
+#particles-canvas {
+    pointer-events: none;
+    opacity: 0.8;
+    z-index: -1;
+    position: absolute;
+}
+
+/* Racing Track Lines */
+.racing-grid::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(220, 38, 38, 0.6) 25%,
+        rgba(249, 115, 22, 0.8) 50%,
+        rgba(220, 38, 38, 0.6) 75%,
+        transparent 100%
+    );
+    transform: translateY(-50%);
+    animation: racingLine 2s ease-in-out infinite;
+    z-index: -1;
+}
+
+@keyframes racingLine {
+    0%, 100% { transform: translateY(-50%) scaleX(1); }
+    50% { transform: translateY(-50%) scaleX(1.1); }
+}
+
+/* Performance optimizations */
+.speed-lines, .racing-grid, .racing-overlay {
+    will-change: transform;
+}
+
+/* Profile Tabs */
+.profile-tab {
+    color: rgb(156 163 175); /* gray-400 */
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.profile-tab:hover {
+    color: white;
+    background-color: rgb(55 65 81); /* gray-700 */
+}
+
+.profile-tab.active {
+    background-color: var(--racing-primary) !important;
+    color: white !important;
+}
+
+/* Search Modal */
+#search-modal {
+    z-index: 60;
+}
+
+#search-results {
+    scrollbar-width: thin;
+    scrollbar-color: rgb(75 85 99) transparent;
+}
+
+#search-results::-webkit-scrollbar {
+    width: 6px;
+}
+
+#search-results::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+#search-results::-webkit-scrollbar-thumb {
+    background-color: rgb(75 85 99);
+    border-radius: 3px;
+}
+
+/* Suggested Users */
+.suggested-user-item {
+    transition: background-color 0.2s ease;
+}
+
+.suggested-user-item:hover {
+    background-color: rgb(55 65 81); /* gray-700 */
+}
+
+/* Post interactions */
+.post-interaction {
+    transition: all 0.2s ease;
+}
+
+.post-interaction:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 9999px;
+}
+
+/* Profile cover and avatar */
+.profile-cover {
+    background: linear-gradient(135deg, var(--racing-orange), var(--racing-red));
+}
+
+.profile-avatar-border {
+    border: 4px solid rgb(31 41 55); /* gray-800 */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .speed-lines {
+        animation-duration: 2s;
+    }
+    
+    .racing-grid {
+        background-size: 30px 30px;
+        animation-duration: 8s;
+    }
+}

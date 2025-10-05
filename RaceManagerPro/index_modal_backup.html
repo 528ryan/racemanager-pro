@@ -1,0 +1,1155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MotorSport Pro</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="styles/modern.css">
+    
+    <!-- Feather Icons -->
+    <script src="https://unpkg.com/feather-icons"></script>
+    
+    <!-- Custom Racing Background (CSS + Canvas) -->
+</head>
+<body class="min-h-screen bg-gray-900 text-white overflow-hidden">
+    <!-- Vanta.js Background -->
+    <div id="vanta-bg"></div>
+    
+    <!-- Racing Particles Overlay -->
+    <div id="particles-overlay" class="fixed inset-0" style="z-index: -5;">
+        <canvas id="particles-canvas" class="absolute inset-0 w-full h-full"></canvas>
+    </div>
+    
+    <!-- Loading Screen -->
+    <div id="loadingScreen" class="relative z-50 min-h-screen flex items-center justify-center bg-gray-900">
+        <div class="text-center">
+            <div class="racing-icon mb-4">
+                <i data-feather="zap" class="w-16 h-16 mx-auto text-red-500 animate-pulse"></i>
+            </div>
+            <h1 class="text-2xl font-bold gradient-text mb-4">RaceManager Pro</h1>
+            <div class="racing-loader mx-auto"></div>
+            <p class="text-gray-400 mt-4">Initializing racing experience...</p>
+        </div>
+    </div>
+    
+    <!-- Login Screen -->
+    <div id="loginScreen" class="relative z-10 min-h-screen flex items-center justify-center" style="display: none;">
+        <div class="glass-card p-8 max-w-md w-full mx-4">
+            <!-- Logo/Brand -->
+            <div class="text-center mb-8">
+                <div class="racing-icon mb-4">
+                    <i data-feather="zap" class="w-12 h-12 mx-auto text-red-500"></i>
+                </div>
+                <h1 class="text-3xl font-bold gradient-text mb-2">RaceManager Pro</h1>
+                <p class="text-gray-400">Fuel Your Racing Legacy</p>
+            </div>
+            
+            <!-- Login Form -->
+            <div class="space-y-6">
+                <button 
+                    id="google-login-btn" 
+                    class="w-full racing-btn flex items-center justify-center space-x-3 py-3 px-6 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105"
+                >
+                    <svg class="w-5 h-5" viewBox="0 0 24 24">
+                        <path fill="currentColor" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                        <path fill="currentColor" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                        <path fill="currentColor" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                        <path fill="currentColor" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                    </svg>
+                    <span>Continue with Google</span>
+                </button>
+                
+                <div class="relative">
+                    <div class="absolute inset-0 flex items-center">
+                        <div class="w-full border-t border-gray-600"></div>
+                    </div>
+                    <div class="relative flex justify-center text-sm">
+                        <span class="px-2 bg-gray-900 text-gray-400">Or continue with email</span>
+                    </div>
+                </div>
+                
+                <form id="email-login-form" class="space-y-4">
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-gray-300 mb-1">Username or Email</label>
+                        <input 
+                            type="text" 
+                            id="email" 
+                            class="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none transition-all"
+                            placeholder="Enter your username or email"
+                            required
+                        >
+                    </div>
+                    
+                    <div>
+                        <label for="password" class="block text-sm font-medium text-gray-300 mb-1">Password</label>
+                        <input 
+                            type="password" 
+                            id="password" 
+                            class="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none transition-all"
+                            placeholder="Enter your password"
+                            required
+                        >
+                    </div>
+                    
+                    <button type="submit" class="w-full racing-btn py-3 font-semibold">
+                        Sign In
+                    </button>
+                </form>
+                
+                <div class="text-center text-sm text-gray-400">
+                    <p>Don't have an account? <a href="#" id="show-signup-btn" class="text-red-400 hover:text-red-300 font-semibold">Sign up</a></p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Loading Indicator -->
+        <div id="login-loading" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" style="display: none;">
+            <div class="racing-loader"></div>
+        </div>
+    </div>
+
+    <!-- Sign Up Screen -->
+    <div id="signup-screen" class="relative z-10 min-h-screen flex items-center justify-center" style="display: none;">
+        <div class="glass-card p-8 max-w-md w-full mx-4">
+            <!-- Logo/Brand -->
+            <div class="text-center mb-8">
+                <div class="racing-icon mb-4">
+                    <i data-feather="zap" class="w-12 h-12 mx-auto text-red-500"></i>
+                </div>
+                <h1 class="text-3xl font-bold gradient-text mb-2">Join RaceManager Pro</h1>
+                <p class="text-gray-400">Start Your Racing Legacy</p>
+            </div>
+            
+            <!-- Sign Up Form -->
+            <form id="signup-form" class="space-y-4">
+
+                
+                <div>
+                    <label for="signup-email" class="block text-sm font-medium text-gray-300 mb-1">Email</label>
+                    <input 
+                        type="email" 
+                        id="signup-email" 
+                        class="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none transition-all"
+                        placeholder="Enter your email"
+                        required
+                    >
+                </div>
+                
+                <div>
+                    <label for="signup-password" class="block text-sm font-medium text-gray-300 mb-1">Password</label>
+                    <input 
+                        type="password" 
+                        id="signup-password" 
+                        class="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none transition-all"
+                        placeholder="Create a secure password"
+                        required
+                    >
+                    <p class="text-xs text-gray-500 mt-1">At least 6 characters with numbers and letters</p>
+                </div>
+                
+                <div>
+                    <label for="signup-confirm-password" class="block text-sm font-medium text-gray-300 mb-1">Confirm Password</label>
+                    <input 
+                        type="password" 
+                        id="signup-confirm-password" 
+                        class="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none transition-all"
+                        placeholder="Confirm your password"
+                        required
+                    >
+                </div>
+                
+                <div class="text-xs text-gray-400 bg-gray-800 p-3 rounded-lg">
+                    <p class="font-medium mb-1">Password Requirements:</p>
+                    <ul class="space-y-1">
+                        <li>• At least 6 characters long</li>
+                        <li>• Contains at least 1 number</li>
+                        <li>• Contains at least 1 letter</li>
+                    </ul>
+                </div>
+                
+                <button type="submit" class="w-full racing-btn py-3 font-semibold">
+                    Continue
+                </button>
+            </form>
+            
+            <div class="text-center text-sm text-gray-400 mt-6">
+                <p>Already have an account? <a href="#" id="show-login-btn" class="text-red-400 hover:text-red-300 font-semibold">Sign in</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile Setup Screen (Step 2) -->
+    <div id="profile-setup-screen" class="min-h-screen flex items-center justify-center p-4 hidden">
+        <div class="glass-card p-8 w-full max-w-md">
+            <div class="text-center mb-8">
+                <div class="racing-logo mb-4">
+                    <i data-feather="zap" class="w-12 h-12 mx-auto text-red-500"></i>
+                </div>
+                <h2 class="text-2xl font-bold mb-2">Complete Your Profile</h2>
+                <p class="text-gray-400">Set up your racing identity</p>
+            </div>
+            
+            <!-- Profile Setup Form -->
+            <form id="profile-setup-form" class="space-y-4">
+                <div>
+                    <label for="setup-username" class="block text-sm font-medium text-gray-300 mb-1">Username</label>
+                    <div class="relative">
+                        <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">@</span>
+                        <input 
+                            type="text" 
+                            id="setup-username" 
+                            class="w-full pl-8 pr-3 py-2 bg-gray-800 border border-gray-600 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none transition-all"
+                            placeholder="your_username"
+                            minlength="3"
+                            maxlength="20"
+                            pattern="[a-zA-Z0-9_]+"
+                            required
+                        >
+                    </div>
+                    <p class="text-xs text-gray-500 mt-1">3-20 characters, letters, numbers and underscore only</p>
+                </div>
+                
+                <div>
+                    <label for="setup-displayname" class="block text-sm font-medium text-gray-300 mb-1">Display Name</label>
+                    <input 
+                        type="text" 
+                        id="setup-displayname" 
+                        class="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none transition-all"
+                        placeholder="Your Display Name"
+                        maxlength="30"
+                        required
+                    >
+                    <p class="text-xs text-gray-500 mt-1">This is how others will see your name</p>
+                </div>
+                
+                <div>
+                    <label for="setup-avatar" class="block text-sm font-medium text-gray-300 mb-1">Profile Picture (Optional)</label>
+                    <input 
+                        type="url" 
+                        id="setup-avatar" 
+                        class="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none transition-all"
+                        placeholder="https://example.com/avatar.jpg"
+                    >
+                    <p class="text-xs text-gray-500 mt-1">Enter a URL for your profile picture</p>
+                </div>
+                
+                <button type="submit" class="w-full racing-btn py-3 font-semibold">
+                    Complete Sign Up
+                </button>
+            </form>
+            
+            <div class="text-center text-sm text-gray-400 mt-6">
+                <p>Need to go back? <a href="#" id="back-to-signup-btn" class="text-red-400 hover:text-red-300 font-semibold">Edit account info</a></p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Main App Content -->
+    <div id="mainApp" class="min-h-screen" style="display: none;">
+        
+        
+        <main class="max-w-6xl mx-auto p-4">
+            <!-- Social Feed Layout -->
+            <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+                
+                <!-- Left Sidebar - User Profile & Quick Actions -->
+                <div class="lg:col-span-1">
+                    <div class="glass-card p-4 mb-4">
+                        <div class="text-center">
+                            <img id="user-avatar" class="w-16 h-16 rounded-full mx-auto mb-3" src="" alt="Avatar">
+                            <h3 id="user-display-name" class="font-semibold text-white"></h3>
+                            <p id="user-email" class="text-sm text-gray-400"></p>
+                            <div class="mt-3 space-y-2">
+                                <button id="profile-btn" class="w-full text-xs text-blue-400 hover:text-blue-300 transition-colors">
+                                    <i data-feather="user" class="w-4 h-4 inline mr-1"></i>View Profile
+                                </button>
+                                <button id="logout-btn-main" class="w-full text-xs text-red-400 hover:text-red-300 transition-colors">
+                                    <i data-feather="log-out" class="w-4 h-4 inline mr-1"></i>Logout
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-4 space-y-2">
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-400">Posts</span>
+                                <span id="user-posts-count" class="text-white">0</span>
+                            </div>
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-400">Followers</span>
+                                <span id="user-followers-count" class="text-white">0</span>
+                            </div>
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-400">Following</span>
+                                <span id="user-following-count" class="text-white">0</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Quick Actions -->
+                    <div class="glass-card p-4">
+                        <h4 class="font-semibold mb-3">Quick Actions</h4>
+                        <div class="space-y-2">
+                            <button id="create-championship-btn" class="w-full text-left p-2 rounded hover:bg-gray-700 transition-colors text-sm">
+                                <i data-feather="award" class="w-4 h-4 inline mr-2"></i>
+                                Create Championship
+                            </button>
+                            <button id="join-championship-btn" class="w-full text-left p-2 rounded hover:bg-gray-700 transition-colors text-sm">
+                                <i data-feather="users" class="w-4 h-4 inline mr-2"></i>
+                                Join Championship
+                            </button>
+                            <button id="find-drivers-btn" class="w-full text-left p-2 rounded hover:bg-gray-700 transition-colors text-sm">
+                                <i data-feather="users" class="w-4 h-4 inline mr-2"></i>
+                                Find Drivers
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Central Feed -->
+                <div class="lg:col-span-2">
+                    <!-- New Post Creation -->
+                    <div class="glass-card p-4 mb-4">
+                        <div class="flex items-start space-x-3">
+                            <img id="post-user-avatar" class="w-10 h-10 rounded-full" src="" alt="Avatar">
+                            <div class="flex-1">
+                                <textarea 
+                                    id="new-post-content" 
+                                    placeholder="What's happening in your racing world?"
+                                    class="w-full p-3 bg-gray-800 border border-gray-600 rounded-lg resize-none focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none"
+                                    rows="3"
+                                ></textarea>
+                                <div class="flex justify-between items-center mt-3">
+                                    <div class="flex space-x-2">
+                                        <button id="add-race-result-btn" class="p-2 text-gray-400 hover:text-white transition-colors" title="Add race result">
+                                            <i data-feather="award" class="w-5 h-5"></i>
+                                        </button>
+                                        <span class="text-sm text-gray-500">Share your racing thoughts...</span>
+                                    </div>
+                                    <button id="publish-post-btn" class="racing-btn px-6 py-2 text-sm">
+                                        Post
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Create Post -->
+                    <div class="glass-card p-4 mb-4">
+                        <div class="flex items-start space-x-3">
+                            <div id="user-avatar-post" class="w-10 h-10 bg-gradient-to-br from-red-500 to-orange-500 rounded-full flex items-center justify-center text-white font-bold text-sm">
+                                U
+                            </div>
+                            <div class="flex-1">
+                                <textarea 
+                                    id="post-content" 
+                                    placeholder="Share your racing updates..."
+                                    class="w-full bg-gray-800/50 border border-gray-600 rounded-lg px-3 py-2 text-white placeholder-gray-400 resize-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                                    rows="3"
+                                ></textarea>
+                                <div class="flex justify-between items-center mt-2">
+                                    <div class="flex space-x-2">
+                                        <button id="add-image-btn" class="text-gray-400 hover:text-orange-400 transition-colors">
+                                            <i data-feather="image" class="w-5 h-5"></i>
+                                        </button>
+                                        <button id="add-location-btn" class="text-gray-400 hover:text-orange-400 transition-colors">
+                                            <i data-feather="map-pin" class="w-5 h-5"></i>
+                                        </button>
+                                    </div>
+                                    <button id="create-post-btn" class="racing-btn px-4 py-1 text-sm">
+                                        Post
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Social Feed -->
+                    <div id="social-feed" class="space-y-4">
+                        <!-- Feed posts will be dynamically loaded here -->
+                        <div id="feed-loading" class="text-center py-8 text-gray-400">
+                            <i data-feather="rss" class="w-12 h-12 mx-auto mb-4"></i>
+                            <p>Loading your personalized racing feed...</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Load More -->
+                    <div class="text-center mt-6">
+                        <button id="load-more-posts" class="px-6 py-2 border border-gray-600 rounded-lg hover:bg-gray-800 transition-colors">
+                            Load More Posts
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Right Sidebar - Trending & Suggestions -->
+                <div class="lg:col-span-1">
+                    <!-- Trending Championships -->
+                    <div class="glass-card p-4 mb-4">
+                        <h4 class="font-semibold mb-3">Trending Championships</h4>
+                        <div id="trending-championships" class="space-y-2">
+                            <!-- Will be populated with most active championships -->
+                            <div class="text-center py-4">
+                                <i data-feather="bar-chart-2" class="w-8 h-8 mx-auto mb-2 text-gray-500"></i>
+                                <p class="text-sm text-gray-400">No trending championships yet</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Suggested Connections -->
+                    <div class="glass-card p-4 mb-4">
+                        <h4 class="font-semibold mb-3">Suggested Drivers</h4>
+                        <div id="suggested-drivers" class="space-y-3">
+                            <!-- Will be populated dynamically -->
+                            <div class="text-sm text-gray-400">Finding drivers to follow...</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Active Championships -->
+                    <div class="glass-card p-4">
+                        <h4 class="font-semibold mb-3">Active Championships</h4>
+                        <div id="active-championships" class="space-y-2">
+                            <div class="text-sm text-gray-400">No active championships</div>
+                        </div>
+                    </div>
+                </div>            </div>
+        </main>
+    </div>
+    
+    <!-- Toast Notifications -->
+    <div id="toast-container" class="fixed top-4 right-4 z-50 space-y-2"></div>
+
+    <!-- Create Championship Modal -->
+    <div id="create-championship-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="glass-card p-6 max-w-md w-full mx-4">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-semibold">Create Championship</h3>
+                <button id="close-championship-modal" class="text-gray-400 hover:text-white">
+                    <i data-feather="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            
+            <form id="championship-form" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-1">Championship Name</label>
+                    <input type="text" id="championship-name" name="name" class="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg focus:ring-2 focus:ring-red-500 outline-none" placeholder="e.g., F1 2025 Season" required>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-1">Series</label>
+                    <select id="championship-series" name="series" class="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg focus:ring-2 focus:ring-red-500 outline-none">
+                        <option value="f1">Formula 1</option>
+                        <option value="f2">Formula 2</option>
+                        <option value="f3">Formula 3</option>
+                        <option value="indycar">IndyCar</option>
+                        <option value="nascar">NASCAR</option>
+                        <option value="wec">WEC</option>
+                        <option value="dtm">DTM</option>
+                        <option value="custom">Custom</option>
+                    </select>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-1">Season</label>
+                    <input type="text" id="championship-season" name="season" class="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg focus:ring-2 focus:ring-red-500 outline-none" placeholder="e.g., 2025" required>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-1">Description</label>
+                    <textarea id="championship-description" name="description" class="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg focus:ring-2 focus:ring-red-500 outline-none" rows="3" placeholder="Describe your championship..."></textarea>
+                </div>
+                
+                <div class="flex space-x-3 pt-4">
+                    <button type="button" id="cancel-championship" class="flex-1 px-4 py-2 border border-gray-600 rounded-lg hover:bg-gray-800 transition-colors">Cancel</button>
+                    <button type="submit" class="flex-1 racing-btn py-2">Create</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Find Drivers Modal -->
+    <div id="find-drivers-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="glass-card p-6 max-w-lg w-full mx-4">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-semibold">Find Drivers</h3>
+                <button id="close-drivers-modal" class="text-gray-400 hover:text-white">
+                    <i data-feather="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            
+            <div class="mb-4">
+                <div class="flex gap-2">
+                    <input type="text" id="driver-search" class="flex-1 px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg focus:ring-2 focus:ring-red-500 outline-none" placeholder="Search drivers by exact name...">
+                    <button id="search-drivers-btn" class="racing-btn px-4 py-2 rounded-lg">
+                        <i data-feather="search" class="w-4 h-4"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div id="drivers-search-results" class="space-y-3 max-h-64 overflow-y-auto">
+                <div class="text-center py-4 text-gray-400">
+                    <i data-feather="search" class="w-8 h-8 mx-auto mb-2"></i>
+                    <p>Search for drivers to connect with</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Join Championship Modal -->
+    <div id="join-championship-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="glass-card p-6 max-w-lg w-full mx-4">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-semibold">Join Championship</h3>
+                <button id="close-championship-modal" class="text-gray-400 hover:text-white">
+                    <i data-feather="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            
+            <div id="available-championships" class="space-y-3 max-h-64 overflow-y-auto">
+                <div class="text-center py-4 text-gray-400">
+                    <i data-feather="award" class="w-8 h-8 mx-auto mb-2"></i>
+                    <p>No championships available to join</p>
+                    <p class="text-sm mt-2">All public championships will appear here</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Race Modal -->
+    <div id="add-race-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[60] hidden">
+        <div class="glass-card p-6 max-w-md w-full mx-4">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-semibold">Add Race</h3>
+                <button data-dismiss="modal" class="text-gray-400 hover:text-white">
+                    <i data-feather="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            <form id="add-race-form">
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Race Name</label>
+                        <input type="text" id="race-name" class="w-full px-3 py-2 bg-gray-700 rounded border border-gray-600 focus:border-red-500 focus:outline-none text-white" placeholder="e.g., Monaco Grand Prix" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Date</label>
+                        <input type="date" id="race-date" class="w-full px-3 py-2 bg-gray-700 rounded border border-gray-600 focus:border-red-500 focus:outline-none text-white" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Location</label>
+                        <input type="text" id="race-location" class="w-full px-3 py-2 bg-gray-700 rounded border border-gray-600 focus:border-red-500 focus:outline-none text-white" placeholder="e.g., Monte Carlo, Monaco">
+                    </div>
+                </div>
+                <div class="flex justify-end gap-3 mt-6">
+                    <button type="button" data-dismiss="modal" class="px-4 py-2 text-gray-400 hover:text-white">Cancel</button>
+                    <button type="submit" id="save-race-btn" class="racing-btn px-4 py-2">Add Race</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Manage Drivers Modal -->
+    <div id="manage-drivers-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="glass-card p-6 max-w-2xl w-full mx-4 max-h-[80vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-semibold">Manage Drivers</h3>
+                <button data-dismiss="modal" class="text-gray-400 hover:text-white">
+                    <i data-feather="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            <div id="drivers-list">
+                <!-- Drivers list will be populated here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Points Modal -->
+    <div id="custom-points-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="glass-card p-6 max-w-md w-full mx-4">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-semibold">Custom Points System</h3>
+                <button data-dismiss="modal" class="text-gray-400 hover:text-white">
+                    <i data-feather="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            <form id="custom-points-form">
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-1">1st Place</label>
+                        <input type="number" id="points-1st" value="25" class="w-full px-3 py-2 bg-gray-700 rounded border border-gray-600 focus:border-red-500 focus:outline-none text-white">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-1">2nd Place</label>
+                        <input type="number" id="points-2nd" value="18" class="w-full px-3 py-2 bg-gray-700 rounded border border-gray-600 focus:border-red-500 focus:outline-none text-white">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-1">3rd Place</label>
+                        <input type="number" id="points-3rd" value="15" class="w-full px-3 py-2 bg-gray-700 rounded border border-gray-600 focus:border-red-500 focus:outline-none text-white">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Fastest Lap Bonus</label>
+                        <input type="number" id="points-fastest-lap" value="1" class="w-full px-3 py-2 bg-gray-700 rounded border border-gray-600 focus:border-red-500 focus:outline-none text-white">
+                    </div>
+                </div>
+                <div class="flex justify-end gap-3 mt-6">
+                    <button type="button" data-dismiss="modal" class="px-4 py-2 text-gray-400 hover:text-white">Cancel</button>
+                    <button type="button" id="save-custom-points-btn" class="racing-btn px-4 py-2">Save Points</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div id="settings-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="glass-card p-6 max-w-md w-full mx-4">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-semibold">Settings</h3>
+                <button data-dismiss="modal" class="text-gray-400 hover:text-white">
+                    <i data-feather="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium mb-1">Theme</label>
+                    <select id="theme-selector" class="w-full px-3 py-2 bg-gray-700 rounded border border-gray-600 focus:border-red-500 focus:outline-none text-white">
+                        <option value="dark">Dark</option>
+                        <option value="light">Light</option>
+                        <option value="auto">Auto</option>
+                    </select>
+                </div>
+            </div>
+            <div class="flex justify-end gap-3 mt-6">
+                <button type="button" data-dismiss="modal" class="racing-btn px-4 py-2">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Social Hub Modal -->
+    <div id="social-hub-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="glass-card p-6 max-w-4xl w-full mx-4 max-h-[80vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-semibold">Social Activity</h3>
+                <button data-dismiss="modal" class="text-gray-400 hover:text-white">
+                    <i data-feather="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            <div id="social-hub-content">
+                <!-- Social hub content will be populated here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Driver Stats Modal -->
+    <div id="driver-stats-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="glass-card p-6 max-w-4xl w-full mx-4 max-h-[80vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-4">
+                <h3 id="driver-stats-title" class="text-lg font-semibold">Driver Statistics</h3>
+                <button data-dismiss="modal" class="text-gray-400 hover:text-white">
+                    <i data-feather="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            <div id="driver-stats-content">
+                <!-- Driver stats content will be populated here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile Modal -->
+    <div id="profile-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="glass-card p-6 max-w-2xl w-full mx-4 max-h-[80vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-4">
+                <h3 id="profile-modal-title" class="text-lg font-semibold">User Profile</h3>
+                <button id="close-profile-modal" class="text-gray-400 hover:text-white">
+                    <i data-feather="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            <div id="profile-modal-content">
+                <!-- Profile content will be populated here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Profile Modal -->
+    <div id="edit-profile-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="glass-card p-6 max-w-lg w-full mx-4">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-semibold">Edit Profile</h3>
+                <button id="close-edit-profile-modal" class="text-gray-400 hover:text-white">
+                    <i data-feather="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            <form id="edit-profile-form" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Display Name</label>
+                    <input type="text" id="edit-display-name" class="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg focus:ring-2 focus:ring-red-500 outline-none" required>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Bio</label>
+                    <textarea id="edit-bio" rows="3" class="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg focus:ring-2 focus:ring-red-500 outline-none" placeholder="Tell us about yourself..."></textarea>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Location</label>
+                    <input type="text" id="edit-location" class="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg focus:ring-2 focus:ring-red-500 outline-none" placeholder="Your location">
+                </div>
+                <div class="flex gap-2 justify-end">
+                    <button type="button" id="cancel-edit-profile" class="px-4 py-2 text-gray-400 hover:text-white transition-colors">Cancel</button>
+                    <button type="submit" class="racing-btn px-4 py-2">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <!-- Three.js (required for Vanta.js) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    
+    <!-- Vanta.js Waves -->
+    <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.waves.min.js"></script>
+    
+    <!-- Firebase Configuration -->
+    <script type="module" src="js/firebase.js"></script>
+    
+    <!-- New Microservices Architecture -->
+    <script type="module" src="js/RaceManagerPro.js"></script>
+    
+    <script>
+        // Initialize Feather Icons
+        feather.replace();
+        
+        // Handle custom driver count toggle
+        document.addEventListener('change', function(e) {
+            if (e.target && e.target.id === 'max-drivers') {
+                const customDiv = document.getElementById('custom-driver-count');
+                if (e.target.value === 'custom') {
+                    customDiv.classList.remove('hidden');
+                    document.getElementById('custom-max-drivers').setAttribute('required', 'true');
+                } else {
+                    customDiv.classList.add('hidden');
+                    document.getElementById('custom-max-drivers').removeAttribute('required');
+                }
+            }
+        });
+        
+        // Initialize Custom Racing Background
+        initRacingBackground();
+
+        // Custom Racing Background System
+        function initRacingBackground() {
+            const canvas = document.getElementById('particles-canvas');
+            if (!canvas) return;
+
+            const ctx = canvas.getContext('2d');
+            let particles = [];
+            let animationId;
+
+            // Set canvas size
+            function resizeCanvas() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+
+            // Enhanced Racing Particle class
+            class RacingParticle {
+                constructor(type = 'spark') {
+                    this.type = type;
+                    this.reset();
+                    this.y = Math.random() * canvas.height;
+                }
+
+                reset() {
+                    this.x = canvas.width + Math.random() * 200;
+                    this.y = Math.random() * canvas.height;
+                    
+                    switch(this.type) {
+                        case 'spark':
+                            this.speed = Math.random() * 4 + 2;
+                            this.size = Math.random() * 3 + 1;
+                            this.opacity = Math.random() * 0.7 + 0.3;
+                            this.color = Math.random() > 0.6 ? 'rgba(255, 165, 0, ' : 'rgba(220, 38, 38, ';
+                            this.trail = Math.random() * 8 + 4;
+                            break;
+                        case 'smoke':
+                            this.speed = Math.random() * 2 + 0.5;
+                            this.size = Math.random() * 6 + 2;
+                            this.opacity = Math.random() * 0.3 + 0.1;
+                            this.color = 'rgba(128, 128, 128, ';
+                            this.trail = 0;
+                            this.growth = Math.random() * 0.02 + 0.01;
+                            break;
+                        case 'flame':
+                            this.speed = Math.random() * 5 + 3;
+                            this.size = Math.random() * 4 + 2;
+                            this.opacity = Math.random() * 0.8 + 0.2;
+                            this.color = Math.random() > 0.5 ? 'rgba(255, 69, 0, ' : 'rgba(255, 140, 0, ';
+                            this.trail = Math.random() * 12 + 6;
+                            this.flicker = Math.random() * 0.1 + 0.05;
+                            break;
+                    }
+                }
+
+                update() {
+                    this.x -= this.speed;
+                    
+                    // Type-specific movement
+                    switch(this.type) {
+                        case 'spark':
+                            this.y += Math.sin(this.x * 0.02) * 0.5;
+                            this.opacity -= 0.005;
+                            break;
+                        case 'smoke':
+                            this.y -= Math.random() * 0.5;
+                            this.size += this.growth;
+                            this.opacity -= 0.002;
+                            break;
+                        case 'flame':
+                            this.y += Math.sin(this.x * 0.03) * (Math.random() * 2 - 1);
+                            this.size += this.flicker * (Math.random() - 0.5);
+                            this.opacity -= 0.003;
+                            break;
+                    }
+
+                    if (this.x < -100 || this.opacity <= 0) {
+                        this.reset();
+                    }
+                }
+
+                draw() {
+                    if (this.opacity <= 0) return;
+                    
+                    ctx.save();
+                    ctx.globalAlpha = this.opacity;
+                    
+                    switch(this.type) {
+                        case 'spark':
+                            // Main spark
+                            ctx.fillStyle = this.color + this.opacity + ')';
+                            ctx.beginPath();
+                            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                            ctx.fill();
+                            
+                            // Speed trail
+                            const gradient = ctx.createLinearGradient(this.x, this.y, this.x + this.trail, this.y);
+                            gradient.addColorStop(0, this.color + this.opacity + ')');
+                            gradient.addColorStop(1, this.color + '0)');
+                            ctx.fillStyle = gradient;
+                            ctx.fillRect(this.x, this.y - 1, this.trail, 2);
+                            break;
+                            
+                        case 'smoke':
+                            ctx.fillStyle = this.color + this.opacity + ')';
+                            ctx.beginPath();
+                            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                            ctx.fill();
+                            break;
+                            
+                        case 'flame':
+                            // Flame effect
+                            const flameGradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.size);
+                            flameGradient.addColorStop(0, this.color + this.opacity + ')');
+                            flameGradient.addColorStop(1, this.color + '0)');
+                            ctx.fillStyle = flameGradient;
+                            ctx.beginPath();
+                            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                            ctx.fill();
+                            
+                            // Flame trail
+                            const flameTrail = ctx.createLinearGradient(this.x, this.y, this.x + this.trail, this.y);
+                            flameTrail.addColorStop(0, this.color + (this.opacity * 0.7) + ')');
+                            flameTrail.addColorStop(1, this.color + '0)');
+                            ctx.fillStyle = flameTrail;
+                            ctx.fillRect(this.x, this.y - 1.5, this.trail, 3);
+                            break;
+                    }
+                    
+                    ctx.restore();
+                }
+            }
+
+            // Initialize particles
+            function createParticles() {
+                particles = [];
+                const particleCount = Math.min(60, Math.floor(canvas.width / 25));
+                
+                for (let i = 0; i < particleCount; i++) {
+                    let particleType;
+                    const rand = Math.random();
+                    
+                    if (rand < 0.5) {
+                        particleType = 'spark';
+                    } else if (rand < 0.8) {
+                        particleType = 'flame';
+                    } else {
+                        particleType = 'smoke';
+                    }
+                    
+                    particles.push(new RacingParticle(particleType));
+                }
+            }
+
+            // Animation loop
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                // Draw racing streak effect
+                const gradient = ctx.createLinearGradient(0, 0, canvas.width, 0);
+                gradient.addColorStop(0, 'rgba(220, 38, 38, 0.02)');
+                gradient.addColorStop(0.5, 'rgba(249, 115, 22, 0.01)');
+                gradient.addColorStop(1, 'rgba(220, 38, 38, 0.02)');
+                
+                ctx.fillStyle = gradient;
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                // Update and draw particles
+                particles.forEach(particle => {
+                    particle.update();
+                    particle.draw();
+                });
+
+                animationId = requestAnimationFrame(animate);
+            }
+
+            // Event listeners
+            window.addEventListener('resize', () => {
+                resizeCanvas();
+                createParticles();
+            });
+
+            // Enhanced Mouse interaction - Racing boost effect
+            canvas.addEventListener('mousemove', (e) => {
+                const rect = canvas.getBoundingClientRect();
+                const mouseX = e.clientX - rect.left;
+                const mouseY = e.clientY - rect.top;
+
+                // Add racing boost particles near mouse
+                if (particles.length < 120) {
+                    for (let i = 0; i < 3; i++) {
+                        const boostParticle = new RacingParticle('flame');
+                        boostParticle.x = mouseX + Math.random() * 60 - 30;
+                        boostParticle.y = mouseY + Math.random() * 60 - 30;
+                        boostParticle.speed *= 1.5;
+                        boostParticle.size *= 1.2;
+                        particles.push(boostParticle);
+                    }
+                }
+            });
+
+            // Click effect - Nitro boost
+            canvas.addEventListener('click', (e) => {
+                const rect = canvas.getBoundingClientRect();
+                const mouseX = e.clientX - rect.left;
+                const mouseY = e.clientY - rect.top;
+
+                // Create explosion of particles
+                for (let i = 0; i < 15; i++) {
+                    const explosionParticle = new RacingParticle(i < 8 ? 'spark' : 'flame');
+                    explosionParticle.x = mouseX;
+                    explosionParticle.y = mouseY;
+                    explosionParticle.speed = Math.random() * 8 + 3;
+                    explosionParticle.size *= 1.5;
+                    
+                    // Radial explosion effect
+                    const angle = (i / 15) * Math.PI * 2;
+                    explosionParticle.vx = Math.cos(angle) * explosionParticle.speed * 0.5;
+                    explosionParticle.vy = Math.sin(angle) * explosionParticle.speed * 0.5;
+                    
+                    particles.push(explosionParticle);
+                }
+            });
+
+            // Initialize
+            resizeCanvas();
+            createParticles();
+            animate();
+
+            // Cleanup function
+            return () => {
+                if (animationId) {
+                    cancelAnimationFrame(animationId);
+                }
+            };
+        }
+    </script>
+
+    <!-- Initialize Feather Icons -->
+    <script>
+        feather.replace();
+        
+        // Initialize Vanta.js Waves Background
+        let vantaEffect = null;
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize Vanta WAVES with elegant secondary color
+            vantaEffect = VANTA.WAVES({
+                el: "#vanta-bg",
+                mouseControls: true,
+                touchControls: true,
+                gyroControls: false,
+                minHeight: 200.00,
+                minWidth: 200.00,
+                scale: 1.00,
+                scaleMobile: 1.00,
+                color: 0x1e3a5f, // Deep Teal Blue - elegant secondary color
+                shininess: 30.00,
+                waveHeight: 12.00,
+                waveSpeed: 0.6,
+                zoom: 0.8,
+                // Subtle and elegant settings
+                material: {
+                    options: {
+                        fog: true,
+                        wireframe: false
+                    }
+                }
+            });
+            
+            // Initialize racing particles
+            initRacingBackground();
+            
+            // Setup social feed functionality
+            setupSocialFeed();
+        });
+        
+        // Social Feed Setup
+        function setupSocialFeed() {
+            // Create post button
+            const createPostBtn = document.getElementById('create-post-btn');
+            const postContent = document.getElementById('post-content');
+            
+            if (createPostBtn && postContent) {
+                createPostBtn.addEventListener('click', async () => {
+                    const content = postContent.value.trim();
+                    if (!content) {
+                        alert('Please write something to share!');
+                        return;
+                    }
+                    
+                    try {
+                        // Emit create post event
+                        if (window.eventBus) {
+                            window.eventBus.emit('social:createPost', {
+                                content: content,
+                                type: 'text',
+                                timestamp: new Date().toISOString(),
+                                isPublic: true
+                            });
+                            
+                            postContent.value = '';
+                            console.log('Post created successfully');
+                        }
+                    } catch (error) {
+                        console.error('Error creating post:', error);
+                        alert('Failed to create post. Please try again.');
+                    }
+                });
+            }
+            
+            // Listen for social events
+            if (window.eventBus) {
+                window.eventBus.on('social:feedLoaded', (posts) => {
+                    renderFeedPosts(posts);
+                });
+                
+                window.eventBus.on('social:postCreated', () => {
+                    // Reload feed after creating post
+                    window.eventBus.emit('social:loadFeed');
+                });
+            }
+        }
+        
+        // Render feed posts
+        function renderFeedPosts(posts) {
+            const feedContainer = document.getElementById('social-feed');
+            const loadingEl = document.getElementById('feed-loading');
+            
+            if (loadingEl) loadingEl.style.display = 'none';
+            
+            if (!posts || posts.length === 0) {
+                feedContainer.innerHTML = `
+                    <div class="text-center py-8 text-gray-400">
+                        <i data-feather="message-circle" class="w-12 h-12 mx-auto mb-4"></i>
+                        <p>No posts yet. Be the first to share something!</p>
+                    </div>
+                `;
+                feather.replace();
+                return;
+            }
+            
+            feedContainer.innerHTML = posts.map(post => `
+                <div class="glass-card p-4">
+                    <div class="flex items-start space-x-3">
+                        <div class="w-10 h-10 bg-gradient-to-br from-red-500 to-orange-500 rounded-full flex items-center justify-center text-white font-bold text-sm">
+                            ${post.userName ? post.userName.charAt(0).toUpperCase() : 'U'}
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex items-center space-x-2 mb-2">
+                                <h4 class="font-semibold">${post.userName || 'Anonymous'}</h4>
+                                <span class="text-sm text-gray-400">${formatTimestamp(post.timestamp)}</span>
+                            </div>
+                            <p class="text-gray-300 mb-3">${post.content}</p>
+                            <div class="flex items-center space-x-4">
+                                <button class="like-btn flex items-center space-x-1 text-gray-400 hover:text-red-400 transition-colors" data-post-id="${post.id}">
+                                    <i data-feather="heart" class="w-4 h-4"></i>
+                                    <span>${post.likeCount || 0}</span>
+                                </button>
+                                <button class="comment-btn flex items-center space-x-1 text-gray-400 hover:text-blue-400 transition-colors" data-post-id="${post.id}">
+                                    <i data-feather="message-circle" class="w-4 h-4"></i>
+                                    <span>${post.commentCount || 0}</span>
+                                </button>
+                                <button class="share-btn flex items-center space-x-1 text-gray-400 hover:text-green-400 transition-colors" data-post-id="${post.id}">
+                                    <i data-feather="share" class="w-4 h-4"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+            
+            feather.replace();
+            
+            // Add event listeners to post buttons
+            setupPostInteractions();
+        }
+        
+        // Setup post interactions
+        function setupPostInteractions() {
+            document.querySelectorAll('.like-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const postId = e.currentTarget.dataset.postId;
+                    if (window.eventBus) {
+                        window.eventBus.emit('social:likePost', { postId });
+                    }
+                });
+            });
+            
+            document.querySelectorAll('.comment-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const postId = e.currentTarget.dataset.postId;
+                    // TODO: Open comment modal
+                    console.log('Comment on post:', postId);
+                });
+            });
+        }
+        
+        // Format timestamp
+        function formatTimestamp(timestamp) {
+            if (!timestamp) return 'now';
+            
+            const now = new Date();
+            const postTime = new Date(timestamp);
+            const diffMs = now - postTime;
+            const diffMins = Math.floor(diffMs / 60000);
+            const diffHours = Math.floor(diffMs / 3600000);
+            const diffDays = Math.floor(diffMs / 86400000);
+            
+            if (diffMins < 1) return 'now';
+            if (diffMins < 60) return `${diffMins}m ago`;
+            if (diffHours < 24) return `${diffHours}h ago`;
+            if (diffDays < 7) return `${diffDays}d ago`;
+            
+            return postTime.toLocaleDateString();
+        }
+    </script>
+</body>
+</html>

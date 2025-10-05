@@ -1,6 +1,6 @@
 // Firebase SDK imports - usando versão 9.0.0 para estabilidade
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js";
-import { getFirestore, collection, doc, getDoc, setDoc, updateDoc, deleteDoc, query, where, getDocs, onSnapshot, orderBy, limit, addDoc, arrayUnion, arrayRemove } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js";
+import { getFirestore, collection, doc, getDoc, setDoc, updateDoc, deleteDoc, query, where, getDocs, onSnapshot, orderBy, limit, addDoc, arrayUnion, arrayRemove, increment } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js";
 import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, updateProfile, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js";
 import envConfig from './utils/EnvironmentConfig.js';
 
@@ -43,6 +43,7 @@ export {
     addDoc,
     arrayUnion,
     arrayRemove,
+    increment,
     signInWithPopup, 
     signOut, 
     createUserWithEmailAndPassword, 

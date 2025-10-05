@@ -759,7 +759,7 @@ export class SimpleAuthService {
      */
     async searchUsers(query) {
         try {
-            const { collection, query: firestoreQuery, where, getDocs, limit } = await import('../firebase.js');
+            const { db, collection, query: firestoreQuery, where, getDocs, limit } = await import('../firebase.js');
             const usersRef = collection(db, 'users');
             
             // Search by display name or username (you can improve this with better search)
@@ -808,7 +808,7 @@ export class SimpleAuthService {
      */
     async loadSuggestedUsers() {
         try {
-            const { collection, getDocs, query, where, limit } = await import('../firebase.js');
+            const { db, collection, getDocs, query, where, limit } = await import('../firebase.js');
             const usersRef = collection(db, 'users');
             
             // Get some recent users (you can improve this with better algorithm)
@@ -1300,7 +1300,7 @@ export class SimpleAuthService {
      */
     async savePostToFirebase(postData) {
         try {
-            const { collection, addDoc } = await import('../firebase.js');
+            const { db, collection, addDoc } = await import('../firebase.js');
             const postsCollection = collection(db, 'posts');
             
             const firebasePostData = {
@@ -1328,7 +1328,7 @@ export class SimpleAuthService {
      */
     async loadPostsFromFirebase() {
         try {
-            const { collection, query, orderBy, getDocs, limit } = await import('../firebase.js');
+            const { db, collection, query, orderBy, getDocs, limit } = await import('../firebase.js');
             
             const postsRef = collection(db, 'posts');
             const postsQuery = query(postsRef, orderBy('createdAt', 'desc'), limit(20));
@@ -3065,7 +3065,7 @@ export class SimpleAuthService {
                 </div>
             `;
 
-            const { collection, query, where, orderBy, getDocs, limit } = await import('../firebase.js');
+            const { db, collection, query, where, orderBy, getDocs, limit } = await import('../firebase.js');
             
             const notificationsRef = collection(db, 'notifications');
             const notificationsQuery = query(
@@ -3164,7 +3164,7 @@ export class SimpleAuthService {
         if (!user) return;
         
         try {
-            const { collection, addDoc } = await import('../firebase.js');
+            const { db, collection, addDoc } = await import('../firebase.js');
             
             const notificationsCollection = collection(db, 'notifications');
             

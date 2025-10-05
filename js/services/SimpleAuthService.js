@@ -1305,7 +1305,7 @@ export class SimpleAuthService {
      */
     async loadSuggestedUsers() {
         try {
-            const { collection, getDocs, query, where, limit } = await import('../firebase.js');
+            const { db, collection, getDocs, query, where, limit } = await import('../firebase.js');
             const usersRef = collection(db, 'users');
             
             // Get some recent users (you can improve this with better algorithm)
@@ -1853,7 +1853,7 @@ export class SimpleAuthService {
      */
     async savePostToFirebase(postData) {
         try {
-            const { collection, addDoc } = await import('../firebase.js');
+            const { db, collection, addDoc } = await import('../firebase.js');
             const postsCollection = collection(db, 'posts');
             
             const firebasePostData = {
@@ -1886,7 +1886,7 @@ export class SimpleAuthService {
                 return [];
             }
 
-            const { collection, query, orderBy, getDocs, limit, where } = await import('../firebase.js');
+            const { db, collection, query, orderBy, getDocs, limit, where } = await import('../firebase.js');
             
             // Get list of users that the current user follows
             const followingList = this.currentUser.following || [];
@@ -2915,7 +2915,7 @@ export class SimpleAuthService {
             
             console.log('💬 Adding comment to post:', postId);
             
-            const { doc, collection, addDoc, updateDoc, increment } = await import('../firebase.js');
+            const { db, doc, collection, addDoc, updateDoc, increment } = await import('../firebase.js');
             
             const commentData = {
                 content: content,

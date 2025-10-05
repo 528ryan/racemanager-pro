@@ -2,7 +2,7 @@
  * FirebaseService - Abstração para operações Firebase
  * Centraliza todas as operações do Firebase
  */
-import { db, auth, googleProvider, signInWithPopup, signOut, createUserWithEmailAndPassword, signInWithEmailAndPassword, collection, doc, getDoc, setDoc, updateDoc, deleteDoc, query, where, getDocs, onSnapshot, orderBy } from '../firebase.js';
+import { db, auth, googleProvider, signInWithPopup, signOut, createUserWithEmailAndPassword, signInWithEmailAndPassword, collection, doc, getDoc, setDoc, updateDoc, deleteDoc, query, where, getDocs, onSnapshot, orderBy, limit, addDoc, arrayUnion, arrayRemove, increment } from '../firebase.js';
 
 export class FirebaseService {
     constructor() {
@@ -18,6 +18,11 @@ export class FirebaseService {
             this.where = where;
             this.getDocs = getDocs;
             this.orderBy = orderBy;
+            this.limit = limit;
+            this.addDoc = addDoc;
+            this.arrayUnion = arrayUnion;
+            this.arrayRemove = arrayRemove;
+            this.increment = increment;
             
             // Enable auth persistence
             this.auth.setPersistence && this.auth.setPersistence('local');
